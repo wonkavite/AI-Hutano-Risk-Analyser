@@ -1,0 +1,138 @@
+--- Deployment Preprocessing Report ---
+Generated on: 2026-07-29 12:12:37
+
+### Missing Value Handling:
+- 'Financial Stress': Imputed with the mean value (3.14).
+- 'Sleep Duration': Imputed with the mode value (3.0).
+
+### Encoding and Column Dropping:
+- 'Gender': Binary encoded (Female: 0, Male: 1)
+- 'Have you ever had suicidal thoughts ?' (renamed 'Suicidal Thoughts'): Binary encoded (No: 0, Yes: 1)
+- 'Family History of Mental Illness' (renamed 'Family History Mental Illness'): Binary encoded (No: 0, Yes: 1)
+
+### Manual Ordinal Mappings:
+#### Sleep Duration Mapping:
+- 'Less than 4 hours': 0
+- '4-6 hours': 1
+- '6-8 hours': 2
+- 'More than 8 hours': 3
+
+### One-Hot Encoded Features (using pd.get_dummies):
+The following columns were one-hot encoded: 'City', 'Profession', 'Dietary Habits', 'Degree'.
+Original columns used for one-hot encoding: 'Dietary Habits', 'Degree'.
+The 'City' and 'Profession' one-hot encoded columns were dropped after generation.
+
+#### One-Hot Encoded Categories Generated (actual columns remaining):
+- Dietary Habits: Healthy, Moderate, Others, Unhealthy
+- Degree: (First Degree Category, e.g., B.A.), B.Com, B.Ed, B.Pharm, B.Tech, BA, BBA, BCA, BE, BHM, BSc, Class 12, LLB, LLM, M.Com, M.Ed, M.Pharm, M.Tech, MA, MBA, MBBS, MCA, MD, ME, MHM, MSc, Others, PhD
+
+### Final Feature Overview (after all preprocessing and dropping):
+- 'Age': Numerical (float64, original or imputed)
+- 'Academic Pressure': Numerical (float64, original or imputed)
+- 'CGPA': Numerical (float64, original or imputed)
+- 'Study Satisfaction': Numerical (float64, original or imputed)
+- 'Sleep Duration': Ordinal Encoded (float64, {'Less than 4 hours': 0, '4-6 hours': 1, '6-8 hours': 2, 'More than 8 hours': 3})
+- 'Financial Stress': Numerical (float64, original or imputed)
+- 'Family History Mental Illness': Binary Encoded (int64, No: 0, Yes: 1)
+- 'Dietary Habits_Moderate': One-Hot Encoded (bool)
+- 'Dietary Habits_Others': One-Hot Encoded (bool)
+- 'Dietary Habits_Unhealthy': One-Hot Encoded (bool)
+- 'Degree_B.Com': One-Hot Encoded (bool)
+- 'Degree_B.Ed': One-Hot Encoded (bool)
+- 'Degree_B.Pharm': One-Hot Encoded (bool)
+- 'Degree_B.Tech': One-Hot Encoded (bool)
+- 'Degree_BA': One-Hot Encoded (bool)
+- 'Degree_BBA': One-Hot Encoded (bool)
+- 'Degree_BCA': One-Hot Encoded (bool)
+- 'Degree_BE': One-Hot Encoded (bool)
+- 'Degree_BHM': One-Hot Encoded (bool)
+- 'Degree_BSc': One-Hot Encoded (bool)
+- 'Degree_Class 12': One-Hot Encoded (bool)
+- 'Degree_LLB': One-Hot Encoded (bool)
+- 'Degree_LLM': One-Hot Encoded (bool)
+- 'Degree_M.Com': One-Hot Encoded (bool)
+- 'Degree_M.Ed': One-Hot Encoded (bool)
+- 'Degree_M.Pharm': One-Hot Encoded (bool)
+- 'Degree_M.Tech': One-Hot Encoded (bool)
+- 'Degree_MA': One-Hot Encoded (bool)
+- 'Degree_MBA': One-Hot Encoded (bool)
+- 'Degree_MBBS': One-Hot Encoded (bool)
+- 'Degree_MCA': One-Hot Encoded (bool)
+- 'Degree_MD': One-Hot Encoded (bool)
+- 'Degree_ME': One-Hot Encoded (bool)
+- 'Degree_MHM': One-Hot Encoded (bool)
+- 'Degree_MSc': One-Hot Encoded (bool)
+- 'Degree_Others': One-Hot Encoded (bool)
+- 'Degree_PhD': One-Hot Encoded (bool)
+
+### Columns Dropped from Final Model:
+- 'City_Agra'
+- 'City_Ahmedabad'
+- 'City_Bangalore'
+- 'City_Bhavna'
+- 'City_Bhopal'
+- 'City_Chennai'
+- 'City_City'
+- 'City_Delhi'
+- 'City_Faridabad'
+- 'City_Gaurav'
+- 'City_Ghaziabad'
+- 'City_Harsh'
+- 'City_Harsha'
+- 'City_Hyderabad'
+- 'City_Indore'
+- 'City_Jaipur'
+- 'City_Kalyan'
+- 'City_Kanpur'
+- 'City_Khaziabad'
+- 'City_Kibara'
+- 'City_Kolkata'
+- 'City_Less Delhi'
+- 'City_Less than 5 Kalyan'
+- 'City_Lucknow'
+- 'City_Ludhiana'
+- 'City_M.Com'
+- 'City_M.Tech'
+- 'City_ME'
+- 'City_Meerut'
+- 'City_Mihir'
+- 'City_Mira'
+- 'City_Mumbai'
+- 'City_Nagpur'
+- 'City_Nalini'
+- 'City_Nalyan'
+- 'City_Nandini'
+- 'City_Nashik'
+- 'City_Patna'
+- 'City_Pune'
+- 'City_Rajkot'
+- 'City_Rashi'
+- 'City_Reyansh'
+- 'City_Saanvi'
+- 'City_Srinagar'
+- 'City_Surat'
+- 'City_Thane'
+- 'City_Vaanya'
+- 'City_Vadodara'
+- 'City_Varanasi'
+- 'City_Vasai-Virar'
+- 'City_Visakhapatnam'
+- 'Gender'
+- 'Job Satisfaction'
+- 'Profession_Chef'
+- 'Profession_Civil Engineer'
+- 'Profession_Content Writer'
+- 'Profession_Digital Marketer'
+- 'Profession_Doctor'
+- 'Profession_Educational Consultant'
+- 'Profession_Entrepreneur'
+- 'Profession_Lawyer'
+- 'Profession_Manager'
+- 'Profession_Pharmacist'
+- 'Profession_Student'
+- 'Profession_Teacher'
+- 'Profession_UX/UI Designer'
+- 'Suicidal Thoughts'
+- 'Work Pressure'
+- 'Work/Study Hours'
+- 'id'
