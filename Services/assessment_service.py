@@ -6,7 +6,7 @@ from Services.risk_service import classify_risk
 from sqlalchemy.orm import Session
 from Database.models import Assessment
 from sqlalchemy import func
-
+from Services.recommendation_service import generate_recommendations
 
 
 
@@ -34,6 +34,12 @@ def assess_student(request: AssessmentRequest, db: Session, current_user
     # Step 3
     assessment_result = classify_risk(probability)
 
+    # Step 4
+    recommendations = generate_recommendations(
+    assessment_result["risk_level"]
+)
+
+
     assessment = Assessment(
     user_id=current_user["user_id"],    
     age=request.age,
@@ -54,6 +60,10 @@ def assess_student(request: AssessmentRequest, db: Session, current_user
     db.commit()
 
     db.refresh(assessment)
+
+    # Step 5
+    assessment_result["recommendations"] = recommendations
+
     return assessment_result
 
 #Asessment history function

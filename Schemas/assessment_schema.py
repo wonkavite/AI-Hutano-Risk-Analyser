@@ -27,7 +27,7 @@ class AssessmentResponse(BaseModel):
     risk_level: str
 
     confidence: float
-
+    recommendations: list[str]
 class AssessmentHistoryResponse(BaseModel):
 
     id: int
