@@ -1,9 +1,9 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-
+from Schemas.user_schema import UserUpdateRequest
 from Database.models import User
 from Authentication.password_handler import hash_password
-
+from Authentication.redis_handler import redis_client
 
 def register_user(request, db: Session):
     """
@@ -81,8 +81,8 @@ def login_user(request, db: Session):
         .first()
     )
 
-    print("Email entered:", request.username)
-    print("User found:", user)
+    # print("Email entered:", request.username)
+    # print("User found:", user)
     
     if user is None:
         raise HTTPException(
@@ -126,3 +126,113 @@ def login_user(request, db: Session):
         "access_token": access_token,
         "token_type": "bearer"
     }
+
+#GET CURRENT USER PROFILE
+def get_current_user_profile(
+    db: Session,
+    current_user
+):
+    """
+    Returns the profile of the
+    authenticated user.
+    """
+
+    user = (
+        db.query(User)
+        .filter(
+            User.id == current_user["user_id"]
+        )
+        .first()
+    )
+
+    if user is None:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found."
+        )
+
+    return user
+
+
+#UPDATE USER ENDPOINT
+def update_current_user(
+    request: UserUpdateRequest,
+    db: Session,
+    current_user
+):
+    """
+    Updates the authenticated user's profile.
+    """
+
+    user = (
+        db.query(User)
+        .filter(
+            User.id == current_user["user_id"]
+        )
+        .first()
+    )
+
+    if user is None:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found."
+        )
+
+    # Check username uniqueness
+    username_exists = (
+        db.query(User)
+        .filter(
+            User.username == request.username,
+            User.id != user.id
+        )
+        .first()
+    )
+
+    if username_exists:
+        raise HTTPException(
+            status_code=400,
+            detail="Username already taken."
+        )
+
+    # Check email uniqueness
+    email_exists = (
+        db.query(User)
+        .filter(
+            User.email == request.email,
+            User.id != user.id
+        )
+        .first()
+    )
+
+    if email_exists:
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered."
+        )
+
+    # Update profile
+    user.username = request.username
+    user.email = request.email
+
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+
+#LOGOUT SERVICE
+def logout_user(current_user):
+    """
+    Logs out the authenticated user
+    by removing their Redis session.
+    """
+
+    redis_client.delete(
+        current_user["session_id"]
+    )
+
+    return {
+        "message": "Successfully logged out."
+    }
+
+

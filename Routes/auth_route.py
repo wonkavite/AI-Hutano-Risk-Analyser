@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from Database.database import get_db
+from Authentication.jwt_verify import verify_token
 from Services.auth_service import (
     register_user,
-    login_user
+    login_user,
+     logout_user
 )
 from Schemas.user_schema import (
     UserRegister,
@@ -43,3 +45,12 @@ def login(
     db: Session = Depends(get_db)
 ):
     return login_user(request, db)
+
+#LOGOUT Endpoint
+@router.post("/logout")
+def logout(
+    current_user=Depends(verify_token)
+):
+
+    return logout_user(current_user)
+

@@ -17,3 +17,4 @@ student_depression.db
 # Operating System Files
 Thumbs.db
 .DS_Store
+*.sqbpro

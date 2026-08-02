@@ -49,7 +49,9 @@ def verify_token(
                 detail="Invalid session."
             )
 
-        return {"user_id":user_id}
+        return {"user_id":user_id,
+                "session_id": session_id
+                }
 
     except JWTError:
         raise HTTPException(

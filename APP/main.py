@@ -1,5 +1,7 @@
 from fastapi import FastAPI
-
+from Routes.user_route import (
+    router as user_router
+)
 from Database.database import Base, engine
 from Database.models import User
 from Routes.auth_route import (
@@ -21,7 +23,7 @@ app = FastAPI(
 # Register routers
 app.include_router(auth_router)
 app.include_router(assessment_router)
-
+app.include_router(user_router)
 
 @app.get("/")
 def home():
