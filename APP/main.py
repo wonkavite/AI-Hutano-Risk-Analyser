@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from Routes.user_route import (
     router as user_router
 )
@@ -20,6 +22,21 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# -----------------------------
+# CORS Configuration
+# -----------------------------
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Register routers
 app.include_router(auth_router)
 app.include_router(assessment_router)
@@ -30,7 +47,5 @@ def home():
     return {
         "message": "Welcome to Student Depression Risk Screening System"
     }
-
-
 
 #uvicorn APP.main:app --reload

@@ -29,9 +29,10 @@ export default function WelcomeCard() {
             Hello, {displayName} 👋
           </h1>
           <p className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-2xl">
-            Welcome! Track your wellbeing, complete new assessments, and
+            Welcome to <strong >Hutano Risky Analyser</strong>! Track your wellbeing, complete new assessments, and
             monitor your mental health journey over time.
           </p>
+          <p>Always remember: <strong><i>Hutano hwakakosha!, your health is of much concern</i></strong></p>
         </div>
 
         {/* Primary & Secondary Action Buttons */}

@@ -25,6 +25,8 @@ export default function Hero() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 border border-blue-200/60 text-blue-800 text-xs sm:text-sm font-semibold shadow-xs mb-6 sm:mb-8 animate-fadeIn">
               <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
               <span>AI-Powered Student Health Depression Wellbeing</span>
+              <span className="bg-green-100 text-green-800 font-bold italic block">Ziva kuti Hutano hwako hwakakosha</span>
+              
             </div>
 
             {/* Main Headline */}

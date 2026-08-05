@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import {
   HiEye,
   HiEyeSlash,
@@ -13,18 +14,41 @@ import {
   HiInformationCircle,
 } from "react-icons/hi2";
 
-export default function Login({ onLoginSuccess }) {
-  const navigate = useNavigate();
+const initialLoginFormData = {
+  email: "",
+  password: "",
+  rememberMe: false,
+};
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    rememberMe: false,
-  });
+export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const errorTimeoutRef = useRef(null);
+
+  const [formData, setFormData] = useState(initialLoginFormData);
 
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const showError = (message) => {
+    setErrorMessage(message);
+    if (errorTimeoutRef.current) {
+      clearTimeout(errorTimeoutRef.current);
+    }
+    errorTimeoutRef.current = setTimeout(() => {
+      setErrorMessage("");
+      errorTimeoutRef.current = null;
+    }, 3000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,25 +56,42 @@ export default function Login({ onLoginSuccess }) {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    if (errorMessage) setErrorMessage("");
+    if (errorMessage) {
+      setErrorMessage("");
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+        errorTimeoutRef.current = null;
+      }
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      setErrorMessage("Please fill in all required fields.");
+      showError("Please fill in all required fields.");
       return;
     }
 
     setIsLoading(true);
+    setErrorMessage("");
 
-    if (onLoginSuccess) {
-      onLoginSuccess(formData);
+    try {
+      await login({
+        email: formData.email,
+        password: formData.password,
+      });
+      setFormData(initialLoginFormData);
+      navigate("/dashboard");
+    } catch (err) {
+      showError(
+        err.detail ||
+        err.message ||
+        "Invalid email or password."
+      );
+    } finally {
+      setIsLoading(false);
     }
-
-    // Redirect user after login
-    navigate("/dashboard");
   };
 
   const featureCards = [
@@ -88,7 +129,7 @@ export default function Login({ onLoginSuccess }) {
                   Student Health
                 </span>
                 <span className="text-xs font-semibold tracking-wide text-blue-600 mt-0.5">
-                  Risk Analyzer
+                  Hutano Risk Analyzer
                 </span>
               </div>
             </div>

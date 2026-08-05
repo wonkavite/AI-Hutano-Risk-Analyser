@@ -73,7 +73,7 @@ export default function MotivationCard() {
         </div>
         <div className="flex items-center gap-1 text-slate-400 text-xs font-semibold">
           <HiSun className="w-4 h-4 text-amber-400" aria-hidden="true" />
-          <span>MindWell</span>
+          <span>Hutano Risky Analyser</span>
         </div>
       </div>
 

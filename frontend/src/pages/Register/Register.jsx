@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   HiEye,
   HiEyeSlash,
@@ -14,20 +14,46 @@ import {
   HiInformationCircle,
   HiXCircle,
 } from "react-icons/hi2";
+import useAuth from "../../hooks/useAuth";
 
-export default function Register({ onRegisterSuccess }) {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    agreeToTerms: false,
-  });
+const initialRegisterFormData = {
+  fullName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  agreeToTerms: false,
+};
+
+export default function Register() {
+  const [formData, setFormData] = useState(initialRegisterFormData);
+  const errorTimeoutRef = useRef(null);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const { register } = useAuth();
+
+  const showError = (message) => {
+    setErrorMessage(message);
+    if (errorTimeoutRef.current) {
+      clearTimeout(errorTimeoutRef.current);
+    }
+    errorTimeoutRef.current = setTimeout(() => {
+      setErrorMessage("");
+      errorTimeoutRef.current = null;
+    }, 3000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Dynamic Password Validation Checks
   const passwordChecks = {
@@ -43,7 +69,13 @@ export default function Register({ onRegisterSuccess }) {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    if (errorMessage) setErrorMessage("");
+    if (errorMessage) {
+      setErrorMessage("");
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+        errorTimeoutRef.current = null;
+      }
+    }
   };
 
   const validateEmail = (email) => {
@@ -54,28 +86,28 @@ export default function Register({ onRegisterSuccess }) {
     e.preventDefault();
 
     if (!formData.fullName.trim()) {
-      setErrorMessage("Please enter your full name.");
+      showError("Please enter your full name.");
       return;
     }
 
     if (!validateEmail(formData.email)) {
-      setErrorMessage("Please enter a valid email address.");
+      showError("Please enter a valid email address.");
       return;
     }
 
     const isPasswordValid = Object.values(passwordChecks).every(Boolean);
     if (!isPasswordValid) {
-      setErrorMessage("Password does not meet all security requirements.");
+      showError("Password does not meet all security requirements.");
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Passwords do not match. Please verify and try again.");
+      showError("Passwords do not match. Please verify and try again.");
       return;
     }
 
     if (!formData.agreeToTerms) {
-      setErrorMessage("Please accept the Terms of Service and Privacy Policy.");
+      showError("Please accept the Terms of Service and Privacy Policy.");
       return;
     }
 
@@ -83,11 +115,19 @@ export default function Register({ onRegisterSuccess }) {
     setErrorMessage("");
 
     try {
-      if (onRegisterSuccess) {
-        await onRegisterSuccess(formData);
-      }
+      await register({
+        username: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+      });
+      setFormData(initialRegisterFormData);
+      navigate("/dashboard");
     } catch (err) {
-      setErrorMessage(err.message || "Registration failed. Please try again.");
+      showError(
+        err?.response?.data?.detail ||
+        err?.message ||
+        "Registration failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -128,7 +168,7 @@ export default function Register({ onRegisterSuccess }) {
                   Student Health
                 </span>
                 <span className="text-xs font-semibold tracking-wide text-blue-600 mt-0.5">
-                  Risk Analyzer
+                  Hutano Risk Analyzer
                 </span>
               </div>
             </div>

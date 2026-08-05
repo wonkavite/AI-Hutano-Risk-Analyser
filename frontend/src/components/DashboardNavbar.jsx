@@ -99,7 +99,7 @@ export default function DashboardNavbar() {
               </div>
               <div className="flex flex-col leading-none">
                 <span className="text-base font-extrabold text-slate-900 tracking-tight">
-                  MindWell
+                  Hutano Risky Analyser
                 </span>
                 <span className="text-[10px] font-bold tracking-wider text-blue-600 uppercase mt-0.5">
                   Dashboard

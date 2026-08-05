@@ -43,7 +43,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="leading-none text-lg">WonkaTech</span>
-                <span className="text-xs text-slate-400 font-medium">MindWell Risk Analyzer</span>
+                <span className="text-xs text-slate-400 font-medium">Utano Risk Analyzer</span>
               </div>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed font-normal">
@@ -138,7 +138,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 text-center sm:text-left font-normal">
           <p>
-            © 2026 Student Health Depression Risk Analyzer. All rights reserved.
+            © 2026 WonkaTech: <strong>Hutano Risky Analyser</strong> All rights reserved.
           </p>
           <div className="inline-flex items-center gap-1.5 flex-wrap justify-center">
             <span>Built with</span>
