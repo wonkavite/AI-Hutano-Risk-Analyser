@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { HiClock, HiLockClosed, HiSparkles, HiArrowRight } from 'react-icons/hi2';
 
 export default function CTA() {
+
   const trustIndicators = [
     {
       icon: HiClock,
@@ -60,13 +62,13 @@ export default function CTA() {
 
             {/* Primary CTA Button */}
             <div className="flex justify-center">
-              <a
-                href="#assessment"
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-white text-blue-600 font-bold text-base sm:text-lg transition-all duration-300 ease-in-out hover:bg-blue-50 hover:shadow-xl hover:shadow-blue-900/30 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-white/40"
+              <Link
+                to="/register"
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-white text-blue-600 font-bold text-base sm:text-lg transition-all duration-300 ease-in-out hover:bg-blue-50 hover:shadow-xl hover:shadow-blue-900/30 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-white/40 cursor-pointer"
               >
                 <span>Start Free Assessment</span>
                 <HiArrowRight className="w-5 h-5 text-blue-600 transition-transform duration-300 group-hover:translate-x-1.5" />
-              </a>
+              </Link>
             </div>
 
           </div>

@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-slate-50/30 to-white py-12 sm:py-16 md:py-20 lg:py-28">
       {/* Background Decorative Blur Spheres */}
@@ -35,25 +37,22 @@ export default function Hero() {
 
             {/* Supporting Description */}
             <p className="text-base sm:text-lg lg:text-xl text-slate-600 font-normal leading-relaxed max-w-2xl mb-8 sm:mb-10">
-             Student Health Depression Risk Analyzer uses Artificial Intelligence to evaluate behavioural and lifestyle indicators associated with student mental wellbeing.
-
-            Receive an instant risk assessment together with personalized recommendations to help you make healthier decisions.
-
+              Student Health Depression Risk Analyzer uses Artificial Intelligence to evaluate behavioural and lifestyle indicators associated with student mental wellbeing.
+              <br /><br />
+              Receive an instant risk assessment together with personalized recommendations to help you make healthier decisions.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
-              <a
-                href="#assessment"
-                className="inline-flex items-center justify-center px-7 py-4 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-2xl shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+              <Link
+                to="/register"
+                className="inline-flex items-center justify-center px-7 py-4 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-2xl shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 cursor-pointer"
               >
                 <span>Start Assessment</span>
                 <svg className="w-5 h-5 ml-2 -mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
-              </a>
-
-          
+              </Link>
             </div>
 
             {/* Trust Indicator / Privacy Note */}
@@ -69,7 +68,7 @@ export default function Hero() {
           {/* Right Column - Visual Illustration Card & Dynamic Floaters */}
           <div className="lg:col-span-5 relative mt-6 lg:mt-0 flex justify-center">
             
-            {/* Main Central Card (Illustration Placeholder) */}
+            {/* Main Central Card */}
             <div className="w-full max-w-md sm:max-w-lg lg:max-w-none bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 shadow-xl shadow-slate-900/5 relative">
               
               {/* Header inside Card */}
@@ -110,7 +109,7 @@ export default function Hero() {
 
               </div>
 
-              {/* Subtle Floating Feature Badge 1: AI Analysis */}
+              {/* Feature Badge 1 */}
               <div className="mt-6 sm:absolute sm:-top-4 sm:-left-6 sm:mt-0 bg-white border border-slate-100 p-3.5 sm:p-4 rounded-2xl shadow-lg flex items-center gap-3 backdrop-blur-md">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -123,7 +122,7 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Subtle Floating Feature Badge 2: Personalized Recommendations */}
+              {/* Feature Badge 2 */}
               <div className="mt-3 sm:absolute sm:-bottom-6 sm:-right-4 sm:mt-0 bg-white border border-slate-100 p-3.5 sm:p-4 rounded-2xl shadow-lg flex items-center gap-3 backdrop-blur-md">
                 <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -137,7 +136,6 @@ export default function Hero() {
               </div>
 
             </div>
-
           </div>
 
         </div>
@@ -145,5 +143,3 @@ export default function Hero() {
     </section>
   );
 }
-
-
