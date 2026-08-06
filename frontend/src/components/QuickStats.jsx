@@ -1,4 +1,5 @@
 import React from "react";
+import { getDashboardStats } from "../services/dashboardService";
 import {
   HiOutlineClipboardDocumentCheck,
   HiOutlineShieldCheck,
@@ -11,13 +12,29 @@ export default function QuickStats() {
   // BACKEND INTEGRATION PLACEHOLDER
   // Replace this object with data retrieved from your FastAPI API endpoint
   // =========================================================
-  const stats = {
-    totalAssessments: 0,
-    latestRisk: null,
-    averageScore: null,
-    lastAssessment: null,
+  const [stats, setStats] = React.useState({
+  total_assessments: 0,
+  high_risk: 0,
+  moderate_risk: 0,
+  low_risk: 0,
+  latest_assessment: null,
+});
+
+React.useEffect(() => {
+  const loadDashboardStats = async () => {
+    try {
+      const data = await getDashboardStats();
+
+      console.log("Dashboard Stats:", data);
+
+      setStats(data);
+    } catch (error) {
+      console.error("Dashboard stats error:", error);
+    }
   };
 
+  loadDashboardStats();
+}, []);
   // Dynamic styling helper for Risk Levels
   const getRiskConfig = (risk) => {
     switch (risk?.toLowerCase()) {
@@ -47,46 +64,48 @@ export default function QuickStats() {
     }
   };
 
-  const riskStyle = getRiskConfig(stats.latestRisk);
+  const riskStyle = getRiskConfig(stats.latest_assessment?.risk_level);
 
   const statCards = [
-    {
-      id: "total-assessments",
-      title: "Total Assessments",
-      value: stats.totalAssessments ?? 0,
-      description: "Assessments completed",
-      icon: HiOutlineClipboardDocumentCheck,
-      iconBg: "bg-blue-50 border-blue-100 text-blue-600",
-      valueColor: "text-slate-900",
-    },
-    {
-      id: "latest-risk",
-      title: "Latest Risk",
-      value: stats.latestRisk || "—",
-      description: "Latest assessment result",
-      icon: HiOutlineShieldCheck,
-      iconBg: riskStyle.iconBg,
-      valueColor: riskStyle.textColor,
-    },
-    {
-      id: "average-score",
-      title: "Average Score",
-      value: stats.averageScore || "—",
-      description: "Average assessment score",
-      icon: HiOutlineChartBar,
-      iconBg: "bg-purple-50 border-purple-100 text-purple-600",
-      valueColor: "text-slate-900",
-    },
-    {
-      id: "last-assessment",
-      title: "Last Assessment",
-      value: stats.lastAssessment || "Never",
-      description: "Last completed assessment",
-      icon: HiOutlineClock,
-      iconBg: "bg-amber-50 border-amber-100 text-amber-600",
-      valueColor: "text-slate-900",
-    },
-  ];
+  {
+    id: "total-assessments",
+    title: "Total Assessments",
+    value: stats.total_assessments,
+    description: "Assessments completed",
+    icon: HiOutlineClipboardDocumentCheck,
+    iconBg: "bg-blue-50 border-blue-100 text-blue-600",
+    valueColor: "text-slate-900",
+  },
+  {
+    id: "latest-risk",
+    title: "Latest Risk",
+    value: stats.latest_assessment?.risk_level || "—",
+    description: stats.latest_assessment
+  ? new Date(stats.latest_assessment.created_at).toLocaleDateString()
+  : "No assessments yet",
+    icon: HiOutlineShieldCheck,
+    iconBg: riskStyle.iconBg,
+    valueColor: riskStyle.textColor,
+  },
+  {
+    id: "high-risk",
+    title: "High Risk Cases",
+    value: stats.high_risk,
+    description: "High-risk assessments",
+    icon: HiOutlineChartBar,
+    iconBg: "bg-rose-50 border-rose-100 text-rose-600",
+    valueColor: "text-rose-700",
+  },
+  {
+    id: "moderate-risk",
+    title: "Moderate Risk Cases",
+    value: stats.moderate_risk,
+    description: "Moderate-risk assessments",
+    icon: HiOutlineClock,
+    iconBg: "bg-amber-50 border-amber-100 text-amber-600",
+    valueColor: "text-amber-700",
+  },
+];
 
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

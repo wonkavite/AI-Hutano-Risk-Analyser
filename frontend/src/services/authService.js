@@ -57,3 +57,15 @@ export const getToken = () => {
 export const isAuthenticated = () => {
   return !!localStorage.getItem("access_token");
 };
+
+/**
+ * Get the currently authenticated user's profile
+ */
+export const getCurrentUser = async () => {
+  try {
+    const response = await api.get("/users/me");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

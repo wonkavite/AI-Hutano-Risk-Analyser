@@ -43,7 +43,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="leading-none text-lg">WonkaTech</span>
-                <span className="text-xs text-slate-400 font-medium">Utano Risk Analyzer</span>
+                <span className="text-xs text-slate-400 font-medium">Hutano Risk Analyzer</span>
               </div>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed font-normal">

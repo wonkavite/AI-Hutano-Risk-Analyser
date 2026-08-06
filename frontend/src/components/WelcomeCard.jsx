@@ -1,4 +1,5 @@
 import React from "react";
+import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import {
   HiOutlineArrowRight,
@@ -7,12 +8,8 @@ import {
 
 export default function WelcomeCard() {
   // Placeholder user object structured for FastAPI backend integration
-  const user = {
-    username: "Student",
-    full_name: "",
-  };
-
-  const displayName = user.full_name || user.username;
+  const { user } = useAuth();
+  const displayName = user?.username || "Student";
 
   return (
     <div className="w-full bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-100 shadow-xl shadow-slate-200/50 transition-all duration-300 hover:shadow-2xl hover:shadow-slate-200/60 relative overflow-hidden">
@@ -28,6 +25,7 @@ export default function WelcomeCard() {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight break-words">
             Hello, {displayName} 👋
           </h1>
+          {user?.email && ( <p className="text-sm text-slate-500 mt-1"> Signed in as {user.email} </p> )}
           <p className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-2xl">
             Welcome to <strong >Hutano Risky Analyser</strong>! Track your wellbeing, complete new assessments, and
             monitor your mental health journey over time.
@@ -45,13 +43,13 @@ export default function WelcomeCard() {
             <HiOutlineArrowRight className="w-5 h-5 shrink-0" />
           </Link>
 
-          <Link
-            to="/dashboard/results"
-            className="px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200/80 active:bg-slate-200 text-slate-700 font-bold text-sm sm:text-base border border-slate-200/60 hover:border-slate-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
-          >
-            <HiOutlineChartBar className="w-5 h-5 text-slate-500 shrink-0" />
-            <span>View Previous Results</span>
-          </Link>
+         <Link
+    to="/assessment-history"
+    className="px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200/80 active:bg-slate-200 text-slate-700 font-bold text-sm sm:text-base border border-slate-200/60 hover:border-slate-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+>
+    <HiOutlineChartBar className="w-5 h-5 text-slate-500 shrink-0" />
+    <span>View Previous History</span>
+</Link>
         </div>
 
         {/* Bottom Motivational Quote */}

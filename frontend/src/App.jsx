@@ -5,6 +5,8 @@ import Login from './pages/Login/Login.jsx';
 import Register from './pages/Register/Register.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
 import ProtectedRoute from "./components/ProtectedRoute";
+import AssessmentHistory from "./pages/AssessmentHistory/AssessmentHistory";
+import AssessmentHistoryDetails from "./pages/AssessmentHistory/AssessmentHistoryDetails";
 
 
 
@@ -15,6 +17,14 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/assessment-history" element={<AssessmentHistory />} />
+
+          <Route
+          path="/assessment-history/:id"
+          element={<AssessmentHistoryDetails />}
+           />
+
+
         <Route
   path="/dashboard"
   element={

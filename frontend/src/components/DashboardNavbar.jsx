@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+//I WILL DELETE THE CODE BELOW IF IT DOES NOT WORK
+import useAuth from "../hooks/useAuth";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
   HiOutlineCog6Tooth,
@@ -21,20 +23,23 @@ export default function DashboardNavbar() {
   const navigate = useNavigate();
 
   // Placeholder user object structured for FastAPI backend integration
-  const user = {
-    username: "Student",
-    full_name: "",
-    email: "",
-    avatar_url: null,
-  };
+   const { user } = useAuth();
+   const displayName = user?.username || "Student";
+  
+  //const user = {
+   // username: "Student",
+    //full_name: "",
+    //email: "",
+    //avatar_url: null,
+  //};
 
-  const displayName = user.full_name || user.username;
+  //const displayName = user.full_name || user.username;
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: HiOutlineHome },
     { name: "Assessment", path: "/dashboard/assessment", icon: HiOutlineClipboardDocumentCheck },
     { name: "Results", path: "/dashboard/results", icon: HiOutlineChartBar },
-    { name: "History", path: "/dashboard/history", icon: HiOutlineClock },
+    { name: "History", path: "/assessment-history", icon: HiOutlineClock },
     { name: "Profile", path: "/dashboard/profile", icon: HiOutlineUser },
     { name: "Settings", path: "/dashboard/settings", icon: HiOutlineCog6Tooth },
   ];

@@ -44,18 +44,13 @@ export function AuthProvider({ children }) {
     try {
       const response = await authService.login(credentials);
 
-      setIsAuthenticated(true);
+   const profile = await authService.getCurrentUser();
 
-      /**
-       * Later:
-       * We will replace this placeholder
-       * by GET /users/me endpoint
-       */
-      setUser({
-        email: credentials.email,
-      });
+setUser(profile);
 
-      return response;
+setIsAuthenticated(true);
+
+return response;
 
     } catch (error) {
       throw error;
@@ -76,22 +71,38 @@ export function AuthProvider({ children }) {
   /**
    * Restore session after refresh
    */
-  useEffect(() => {
+ /**
+ * Restore session after page refresh
+ */
+useEffect(() => {
+  const restoreSession = async () => {
     const token = authService.getToken();
 
-    if (token) {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const profile = await authService.getCurrentUser();
+
+      setUser(profile);
+
       setIsAuthenticated(true);
 
-      /**
-       * TODO
-       * Later fetch current user
-       * GET /users/me
-       */
+    } catch (error) {
+      authService.logout();
+
+      setUser(null);
+
+      setIsAuthenticated(false);
     }
 
     setLoading(false);
+  };
 
-  }, []);
+  restoreSession();
+}, []);
 
   const value = {
     user,
