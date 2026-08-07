@@ -44,7 +44,7 @@ export default function WelcomeCard() {
           </Link>
 
          <Link
-    to="/assessment-history"
+    to="/dashboard/assessment-history"
     className="px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200/80 active:bg-slate-200 text-slate-700 font-bold text-sm sm:text-base border border-slate-200/60 hover:border-slate-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
 >
     <HiOutlineChartBar className="w-5 h-5 text-slate-500 shrink-0" />

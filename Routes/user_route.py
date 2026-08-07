@@ -32,6 +32,23 @@ def get_my_profile(
     )
 
 @router.put(
+    "/",
+    response_model=UserProfileResponse
+)
+def update_my_profile_root(
+    request: UserUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user=Depends(verify_token)
+):
+
+    return update_current_user(
+        request,
+        db,
+        current_user
+    )
+
+
+@router.put(
     "/me",
     response_model=UserProfileResponse
 )

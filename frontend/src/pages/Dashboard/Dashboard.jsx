@@ -1,9 +1,6 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import DashboardNavbar from "../../components/DashboardNavbar";
-import WelcomeCard from "../../components/WelcomeCard";
-import QuickStats from "../../components/QuickStats";
-import MotivationCard from "../../components/MotivationCard";
-import ActionCard from "../../components/ActionCards";
 
 export default function Dashboard() {
   return (
@@ -11,27 +8,10 @@ export default function Dashboard() {
       {/* Dashboard Navbar */}
       <DashboardNavbar />
 
+      {/* Every dashboard page will render here */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <WelcomeCard />
+        <Outlet />
       </main>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <QuickStats />
-      </main>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <MotivationCard />
-      </main>
-
-
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <ActionCard />
-       </main>
-
-
-
-
     </div>
   );
 }

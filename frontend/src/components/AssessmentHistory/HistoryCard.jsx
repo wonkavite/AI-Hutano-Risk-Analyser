@@ -98,7 +98,7 @@ export default function HistoryCard({ assessment }) {
       {/* Footer Action Button */}
       <button
         type="button"
-        onClick={() => navigate(`/assessment-history/${assessment.id}`)}
+        onClick={() => navigate(`/dashboard/assessment-history/${assessment.id}`)}
         className="w-full flex items-center justify-center gap-2 px-5 py-3.5 sm:py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm sm:text-base font-bold shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
         aria-label={`View full details for Assessment #${assessment.id}`}
       >

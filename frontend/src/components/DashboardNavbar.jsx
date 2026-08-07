@@ -39,7 +39,7 @@ export default function DashboardNavbar() {
     { name: "Dashboard", path: "/dashboard", icon: HiOutlineHome },
     { name: "Assessment", path: "/dashboard/assessment", icon: HiOutlineClipboardDocumentCheck },
     { name: "Results", path: "/dashboard/results", icon: HiOutlineChartBar },
-    { name: "History", path: "/assessment-history", icon: HiOutlineClock },
+    { name: "History", path: "/dashboard/assessment-history", icon: HiOutlineClock },
     { name: "Profile", path: "/dashboard/profile", icon: HiOutlineUser },
     { name: "Settings", path: "/dashboard/settings", icon: HiOutlineCog6Tooth },
   ];
