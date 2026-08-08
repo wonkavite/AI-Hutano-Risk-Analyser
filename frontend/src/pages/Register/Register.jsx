@@ -174,7 +174,7 @@ export default function Register() {
             </div>
 
             {/* Form Title & Top Log In Navigation Link */}
-            <div className="mb-8 flex items-baseline justify-between flex-wrap gap-2">
+            <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                   Create an Account
@@ -183,15 +183,23 @@ export default function Register() {
                   Join thousands of students monitoring their mental wellbeing confidentially.
                 </p>
               </div>
-              <p className="text-sm text-slate-600 font-medium">
-                Have an account?{" "}
+              <div className="flex flex-wrap items-center gap-3">
                 <Link
-                  to="/login"
-                  className="text-blue-600 hover:text-blue-700 font-extrabold hover:underline transition focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1 rounded-md px-1"
+                  to="/#navbar"
+                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1"
                 >
-                  LOG IN
+                  Home
                 </Link>
-              </p>
+                <p className="text-sm text-slate-600 font-medium">
+                  Have an account?{" "}
+                  <Link
+                    to="/login"
+                    className="text-blue-600 hover:text-blue-700 font-extrabold hover:underline transition focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1 rounded-md px-1"
+                  >
+                    LOG IN
+                  </Link>
+                </p>
+              </div>
             </div>
 
             {/* Error Notification Area */}

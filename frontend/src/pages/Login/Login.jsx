@@ -135,7 +135,7 @@ export default function Login() {
             </div>
 
             {/* Form Title & Registration Navigation Link */}
-            <div className="mb-8 flex items-baseline justify-between flex-wrap gap-2">
+            <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                   Welcome Back
@@ -144,15 +144,23 @@ export default function Login() {
                   Log in to access your wellbeing dashboard and risk assessments.
                 </p>
               </div>
-              <p className="text-sm text-slate-600 font-medium">
-                Don't have an account?{" "}
+              <div className="flex flex-wrap items-center gap-3">
                 <Link
-                  to="/register"
-                  className="text-blue-600 hover:text-blue-700 font-extrabold hover:underline transition focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1 rounded-md px-1 cursor-pointer"
+                  to="/#navbar"
+                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1"
                 >
-                  Create Account
+                  Home
                 </Link>
-              </p>
+                <p className="text-sm text-slate-600 font-medium">
+                  Don't have an account?{" "}
+                  <Link
+                    to="/register"
+                    className="text-blue-600 hover:text-blue-700 font-extrabold hover:underline transition focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1 rounded-md px-1 cursor-pointer"
+                  >
+                    Create Account
+                  </Link>
+                </p>
+              </div>
             </div>
 
             {/* Error Notification Area */}
@@ -246,13 +254,14 @@ export default function Login() {
                     Remember me
                   </span>
                 </label>
-
+               
                 <a
                   href="#forgot-password"
                   className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-semibold hover:underline transition focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-md"
                 >
-                  Forgot Password?
+                   <del>Forgot Password? </del>
                 </a>
+                
               </div>
 
               {/* Submit Button */}

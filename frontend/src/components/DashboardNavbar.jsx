@@ -37,10 +37,10 @@ export default function DashboardNavbar() {
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: HiOutlineHome },
-    { name: "Assessment", path: "/dashboard/assessment", icon: HiOutlineClipboardDocumentCheck },
-    { name: "Results", path: "/dashboard/results", icon: HiOutlineChartBar },
+    //{ name: "Assessment", path: "/dashboard/assessment", icon: HiOutlineClipboardDocumentCheck },
+   // { name: "Results", path: "/dashboard/results", icon: HiOutlineChartBar },
     { name: "History", path: "/dashboard/assessment-history", icon: HiOutlineClock },
-    { name: "Profile", path: "/dashboard/profile", icon: HiOutlineUser },
+    { name: "Home Page", path: "/", icon: HiOutlineHome },
     { name: "Settings", path: "/dashboard/settings", icon: HiOutlineCog6Tooth },
   ];
 
@@ -71,7 +71,7 @@ export default function DashboardNavbar() {
     setIsMobileMenuOpen(false);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    navigate("/login");
+    navigate("/");
   };
 
   const getInitials = (name) => {
@@ -208,13 +208,13 @@ export default function DashboardNavbar() {
                   </div>
 
                   <NavLink
-                    to="/dashboard/profile"
+                    to="/"
                     onClick={() => setIsProfileMenuOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50/70 rounded-xl transition-colors"
                     role="menuitem"
                   >
-                    <HiOutlineUser className="w-4 h-4" />
-                    <span>Your Profile</span>
+                    <HiOutlineHome className="w-4 h-4" />
+                    <span>Home Page</span>
                   </NavLink>
 
                   <NavLink

@@ -7,17 +7,52 @@ import React, {
 
 import * as authService from "../services/authService";
 
+const readStoredUser = () => {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const storedUser = localStorage.getItem("auth_user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  } catch {
+    return null;
+  }
+};
+
 // Create Context
 const AuthContext = createContext();
 
 // Provider Component
 export function AuthProvider({ children }) {
   // Authentication state
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => readStoredUser());
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!authService.getToken());
 
   const [loading, setLoading] = useState(true);
+
+  const syncUser = (profile, authenticated = true) => {
+    if (profile) {
+      setUser(profile);
+      setIsAuthenticated(authenticated);
+      localStorage.setItem("auth_user", JSON.stringify(profile));
+      return;
+    }
+
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("auth_user");
+  };
+
+  const refreshUser = async (profileOverride) => {
+    try {
+      const profile = profileOverride ?? (await authService.getCurrentUser());
+      syncUser(profile, true);
+      return profile;
+    } catch (error) {
+      syncUser(null, false);
+      throw error;
+    }
+  };
 
   /**
    * Register new user
@@ -43,15 +78,8 @@ export function AuthProvider({ children }) {
   const login = async (credentials) => {
     try {
       const response = await authService.login(credentials);
-
-   const profile = await authService.getCurrentUser();
-
-setUser(profile);
-
-setIsAuthenticated(true);
-
-return response;
-
+      await refreshUser();
+      return response;
     } catch (error) {
       throw error;
     }
@@ -62,10 +90,7 @@ return response;
    */
   const logout = () => {
     authService.logout();
-
-    setUser(null);
-
-    setIsAuthenticated(false);
+    syncUser(null, false);
   };
 
   /**
@@ -84,18 +109,10 @@ useEffect(() => {
     }
 
     try {
-      const profile = await authService.getCurrentUser();
-
-      setUser(profile);
-
-      setIsAuthenticated(true);
-
+      await refreshUser();
     } catch (error) {
       authService.logout();
-
-      setUser(null);
-
-      setIsAuthenticated(false);
+      syncUser(null, false);
     }
 
     setLoading(false);
@@ -116,6 +133,7 @@ useEffect(() => {
     login,
 
     logout,
+    refreshUser,
   };
 
   return (

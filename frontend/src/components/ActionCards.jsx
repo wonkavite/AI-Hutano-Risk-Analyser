@@ -40,7 +40,7 @@ export default function ActionCard() {
           description:
             "It's been several days since your previous assessment. Regular check-ins help build a accurate picture of your mental health trajectory.",
           buttonText: "Start Assessment Again",
-          buttonRoute: "/dashboard/assessment",
+          buttonRoute: "/assessment",
           icon: HiOutlineSparkles,
           badgeText: "Follow-up Due",
           iconBg: "bg-indigo-50 text-indigo-600 border-indigo-100",
@@ -63,7 +63,7 @@ export default function ActionCard() {
           description:
             "You haven't completed any assessment yet. Take your first assessment to receive personalized wellbeing insights and track your depression risk over time.",
           buttonText: "Start Assessment",
-          buttonRoute: "/dashboard/assessment",
+          buttonRoute: "/assessment",
           icon: HiOutlineRocketLaunch,
           badgeText: "Get Started",
           iconBg: "bg-blue-50 text-blue-600 border-blue-100",

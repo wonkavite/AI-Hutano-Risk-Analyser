@@ -21,7 +21,7 @@ export default function EmptyHistory() {
       </p>
 
       <button
-        onClick={() => navigate("/dashboard")}
+        onClick={() => navigate("/assessment")}
         className="mt-8 px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
       >
         Take Your First Assessment

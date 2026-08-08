@@ -36,7 +36,7 @@ export default function WelcomeCard() {
         {/* Primary & Secondary Action Buttons */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
           <Link
-            to="/dashboard/assessment"
+            to="/assessment"
             className="px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm sm:text-base shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
           >
             <span>Start New Assessment</span>

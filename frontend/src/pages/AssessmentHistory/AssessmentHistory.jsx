@@ -35,7 +35,13 @@ export default function AssessmentHistory() {
       <div className="max-w-6xl mx-auto flex flex-col gap-8 sm:gap-10 lg:gap-12">
         
         {/* Header Section */}
-        <div className="flex flex-col gap-2 sm:gap-3">
+        <div className="flex flex-col gap-3 sm:gap-4">
+          <a
+            href="/dashboard"
+            className="inline-flex w-fit items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:border-blue-300 hover:text-blue-600 hover:shadow-md sm:px-4 sm:py-2.5 sm:text-base"
+          >
+            ← Dashboard
+          </a>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
             Assessment History
           </h1>

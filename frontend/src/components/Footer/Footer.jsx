@@ -16,10 +16,10 @@ export default function Footer() {
 
   const quickLinks = [
     { name: 'Home', href: '#home' },
-    { name: 'Features', href: '#features' },
-    { name: 'About', href: '#about' },
-    { name: 'FAQ', href: '#faq' },
-    { name: 'Start Assessment', href: '#assessment' },
+   // { name: 'Features', href: '#features' },
+    //{ name: 'About', href: '#about' },
+    //{ name: 'FAQ', href: '#faq' },
+   // { name: 'Start Assessment', href: '#assessment' },
   ];
 
   const resourceLinks = [

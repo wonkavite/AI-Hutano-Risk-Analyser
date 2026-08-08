@@ -9,8 +9,11 @@ import {
   HiOutlineArrowPath,
 } from "react-icons/hi2";
 import { getCurrentUser, updateUser } from "../../services/userService";
+import useAuth from "../../hooks/useAuth";
 
 export default function Settings() {
+  const { refreshUser } = useAuth();
+
   // =========================================================
   // STATE MANAGEMENT
   // =========================================================
@@ -58,6 +61,7 @@ export default function Settings() {
     try {
       setIsLoading(true);
       const data = await getCurrentUser();
+      await refreshUser(data);
       setUserData(data);
       setFormData({
         username: data.username,
@@ -132,11 +136,16 @@ export default function Settings() {
         username: formData.username.trim(),
         email: formData.email.trim(),
       });
-      
+
+      const refreshedProfile = await getCurrentUser();
+      await refreshUser(refreshedProfile);
+      setUserData(refreshedProfile);
+      setFormData({
+        username: refreshedProfile.username,
+        email: refreshedProfile.email,
+      });
+
       showNotification("Profile updated successfully!", "success");
-      
-      // Refresh data to get any backend formatting/changes
-      await fetchUserData();
       setIsEditing(false);
     } catch (error) {
       showNotification(
@@ -185,7 +194,13 @@ export default function Settings() {
         {/* =========================================================
             HEADER SECTION
         ========================================================= */}
-        <header className="flex flex-col gap-1.5 sm:gap-2">
+        <header className="flex flex-col gap-3 sm:gap-4">
+          <a
+            href="/dashboard"
+            className="inline-flex w-fit items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:border-blue-300 hover:text-blue-600 hover:shadow-md sm:px-4 sm:py-2.5 sm:text-base"
+          >
+            ← Dashboard
+          </a>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
             Account Settings
           </h1>
