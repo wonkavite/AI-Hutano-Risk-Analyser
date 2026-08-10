@@ -8,4 +8,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+
+  preview: {
+    allowedHosts: ['hutano-risk-analyser.onrender.com'],
+  },
 })
