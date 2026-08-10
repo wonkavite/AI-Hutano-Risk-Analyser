@@ -7,14 +7,8 @@ venv/
 
 # SQLite Database
 student_depression.db
-
-# Environment Variables
-.env
-
-# VS Code Settings
-.vscode/
-
-# Operating System Files
-Thumbs.db
-.DS_Store
 *.sqbpro
+# Environment Variables
+
+.env
+frontend/.env

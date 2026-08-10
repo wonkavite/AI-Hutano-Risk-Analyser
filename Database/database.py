@@ -1,13 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
+from dotenv import load_dotenv
 
-DATABASE_URL = "sqlite:///student_depression.db"
+load_dotenv()
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL is not set in the environment.")
+
+engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(
     autoflush=False,

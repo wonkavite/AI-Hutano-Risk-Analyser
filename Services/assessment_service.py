@@ -88,7 +88,16 @@ def get_assessment_history(
         .all()
     )
 
-    return history
+    return [
+        {
+            "id": assessment.id,
+            "assessment_number": index,
+            "risk_level": assessment.risk_level,
+            "prediction_probability": assessment.prediction_probability,
+            "created_at": assessment.created_at,
+        }
+        for index, assessment in enumerate(history, start=1)
+    ][::-1]
 
 #Assessment history by ID
 def get_assessment_by_id(

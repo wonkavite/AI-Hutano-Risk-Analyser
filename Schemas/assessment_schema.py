@@ -31,10 +31,11 @@ class AssessmentResponse(BaseModel):
 class AssessmentHistoryResponse(BaseModel):
 
     id: int
-
+    assessment_number:int
     risk_level: str
 
     prediction_probability: float
+
 
     created_at: datetime
 

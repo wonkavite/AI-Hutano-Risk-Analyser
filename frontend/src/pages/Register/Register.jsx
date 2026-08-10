@@ -186,7 +186,7 @@ export default function Register() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   to="/#navbar"
-                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1"
+                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-gray-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1"
                 >
                   Home
                 </Link>

@@ -1,11 +1,18 @@
+import os
+from dotenv import load_dotenv
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+load_dotenv()
+
+
 
 from Routes.user_route import (
     router as user_router
 )
 from Database.database import Base, engine
-from Database.models import User
+from Database.models import User, Assessment
 from Routes.auth_route import (
     router as auth_router
 )
@@ -26,10 +33,7 @@ app = FastAPI(
 # CORS Configuration
 # -----------------------------
 
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+origins = os.getenv("CORS_ORIGINS", "").split(",")
 
 app.add_middleware(
     CORSMiddleware,

@@ -54,7 +54,7 @@ export default function HistoryCard({ assessment }) {
       {/* Header: ID and Date */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 sm:mb-8">
         <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-          Assessment {assessment.id}
+          Assessment {assessment.assessment_number}
         </h3>
         <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-500 bg-slate-100/80 px-3 py-1.5 rounded-full w-fit">
           <HiCalendarDays className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -100,7 +100,7 @@ export default function HistoryCard({ assessment }) {
         type="button"
         onClick={() => navigate(`/dashboard/assessment-history/${assessment.id}`)}
         className="w-full flex items-center justify-center gap-2 px-5 py-3.5 sm:py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm sm:text-base font-bold shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-        aria-label={`View full details for Assessment #${assessment.id}`}
+        aria-label={`View full details for Assessment #${assessment.assessment_number}`}
       >
         <span>View Full Assessment Details</span>
         <HiArrowRight className="w-5 h-5 shrink-0 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true" />
