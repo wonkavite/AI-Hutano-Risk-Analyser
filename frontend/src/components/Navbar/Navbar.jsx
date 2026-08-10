@@ -43,11 +43,11 @@ export default function Navbar({ onSectionChange, activeSection = 'home' }) {
       >
         <span className="text-2xl">🧠</span>
         <span className="font-extrabold text-slate-900 tracking-tight text-lg">
-          Student Health
+          Student Health Depression Analyzer
         </span>
       </button>
 
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-3 flex-nowrap overflow-x-auto whitespace-nowrap max-w-full">
         {navItems.map((item) => {
           const isActive = activeSection === item.key;
 
@@ -56,7 +56,7 @@ export default function Navbar({ onSectionChange, activeSection = 'home' }) {
               key={item.key}
               type="button"
               onClick={() => handleSectionClick(item.key)}
-              className={`text-sm font-semibold transition ${
+              className={`shrink-0 text-sm font-semibold transition ${
                 isActive
                   ? 'text-blue-600 underline decoration-2 underline-offset-4'
                   : 'text-slate-600 hover:text-blue-600'
@@ -69,7 +69,7 @@ export default function Navbar({ onSectionChange, activeSection = 'home' }) {
 
         <Link
           to="/login"
-          className="text-slate-600 hover:text-blue-600 font-semibold text-sm transition"
+          className="shrink-0 text-slate-600 hover:text-blue-600 font-semibold text-sm transition"
         >
           Log In
         </Link>

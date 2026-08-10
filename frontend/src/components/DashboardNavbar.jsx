@@ -114,14 +114,14 @@ export default function DashboardNavbar() {
           </div>
 
           {/* CENTER: Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-1 bg-slate-100/60 p-1 rounded-2xl border border-slate-200/50">
+         <div className="hidden md:flex items-center gap-1 bg-slate-100/60 p-1 rounded-2xl border border-slate-200/50 max-w-full overflow-x-auto flex-nowrap">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 end={item.path === "/dashboard"}
                 className={({ isActive }) =>
-                  `px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
+                  `shrink-0 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
                     isActive
                       ? "bg-white text-blue-600 shadow-sm shadow-slate-200/80 font-bold"
                       : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
