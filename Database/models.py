@@ -14,7 +14,8 @@ class User(Base):
 
     email = Column(String, unique=True, nullable=False)
 
-    password = Column(String, nullable=False)
+    password = Column(String, nullable=True)
+    google_id = Column(String, unique=True, nullable=True)
 
     created_at = Column(
         DateTime(timezone=True),

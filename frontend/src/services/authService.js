@@ -37,6 +37,56 @@ export const login = async (credentials) => {
   }
 };
 
+
+
+
+/**
+ * Login with Google
+ */
+export const googleLogin = async (idToken, username = null) => {
+  try {
+    const response = await api.post("/auth/google", {
+      id_token: idToken,
+      username: username,
+    });
+
+    localStorage.setItem(
+      "access_token",
+      response.data.access_token
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+
+
+/**
+ * Link Google account to existing account
+ */
+export const linkGoogleAccount = async (idToken, password) => {
+  try {
+    const response = await api.post("/auth/google/link", {
+      id_token: idToken,
+      password: password,
+    });
+
+    // Save JWT returned after successful linking
+    localStorage.setItem(
+      "access_token",
+      response.data.access_token
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+
+
 /**
  * Logout
  */
@@ -70,3 +120,15 @@ export const getCurrentUser = async () => {
     throw error.response?.data || error;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+

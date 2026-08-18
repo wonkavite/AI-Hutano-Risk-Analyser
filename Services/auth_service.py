@@ -2,8 +2,9 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from Schemas.user_schema import UserUpdateRequest
 from Database.models import User
-from Authentication.password_handler import hash_password
+from Authentication.password_handler import hash_password, verify_password
 from Authentication.redis_handler import redis_client
+
 
 def register_user(request, db: Session):
     """
@@ -62,11 +63,10 @@ def register_user(request, db: Session):
 #LOGIN SERVICE
 from fastapi import HTTPException
 
-from Authentication.password_handler import verify_password
-from Authentication.jwt_create import create_token
+
 from Authentication.redis_handler import redis_client
 
-import uuid
+from Authentication.session_handler import create_authenticated_session
 
 
 def login_user(request, db: Session):
@@ -106,26 +106,7 @@ def login_user(request, db: Session):
         )
 
     # Create a unique session id
-    session_id = str(uuid.uuid4())
-
-    # Store session in Redis
-    redis_client.set(
-        session_id,
-        str(user.id)
-    )
-
-    # Create JWT
-    access_token = create_token(
-        {
-            "user_id": user.id,
-            "session_id": session_id
-        }
-    )
-
-    return {
-        "access_token": access_token,
-        "token_type": "bearer"
-    }
+    return create_authenticated_session(user)
 
 #GET CURRENT USER PROFILE
 def get_current_user_profile(

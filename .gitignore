@@ -12,3 +12,4 @@ student_depression.db
 
 .env
 frontend/.env
+firebase-service-account.json

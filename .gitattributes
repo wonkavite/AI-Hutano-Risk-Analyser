@@ -1,0 +1,2 @@
+# Treat requirements.txt as a normal text file
+requirements.txt text eol=lf

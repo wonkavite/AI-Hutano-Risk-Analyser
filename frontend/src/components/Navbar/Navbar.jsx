@@ -32,7 +32,7 @@ export default function Navbar({ onSectionChange, activeSection = 'home' }) {
   };
 
   return (
-    <nav className="w-full bg-white border-b border-slate-100 py-4 px-6 flex items-center justify-between gap-4 flex-wrap">
+    <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 py-4 px-6 flex items-center justify-between gap-4 flex-wrap">
       <button
         type="button"
         onClick={() => {

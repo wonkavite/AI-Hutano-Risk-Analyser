@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { signInWithGoogle } from "../../firebase";
+
+
 import {
   HiEye,
   HiEyeSlash,
@@ -22,12 +25,19 @@ const initialLoginFormData = {
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, googleLogin , linkGoogleAccount } = useAuth();
   const errorTimeoutRef = useRef(null);
 
   const [formData, setFormData] = useState(initialLoginFormData);
-
-  const [showPassword, setShowPassword] = useState(false);
+  const [usernameConflict, setUsernameConflict] = useState(null);
+const [newUsername, setNewUsername] = useState("");
+const [usernameSubmitting, setUsernameSubmitting] = useState(false);
+  const [googleIdToken, setGoogleIdToken] = useState(null);
+  const [accountLinkRequired, setAccountLinkRequired] = useState(null);
+const [linkPassword, setLinkPassword] = useState("");
+const [linkSubmitting, setLinkSubmitting] = useState(false);
+const [linkAlert, setLinkAlert] = useState(null);
+const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -282,6 +292,285 @@ export default function Login() {
                   </>
                 )}
               </button>
+
+
+
+
+
+<div className="flex items-center gap-3 my-5">
+  <div className="h-px flex-1 bg-slate-200" />
+  <span className="text-xs font-medium text-slate-400">OR</span>
+  <div className="h-px flex-1 bg-slate-200" />
+</div>
+
+<button
+  type="button"
+  onClick={async () => {
+  try {
+    const result = await signInWithGoogle();
+
+    const idToken = await result.user.getIdToken();
+
+    console.log("Firebase user:", result.user);
+     
+    setGoogleIdToken(idToken);
+    await googleLogin(idToken);
+
+    navigate("/dashboard");
+  } catch (error) {
+    console.error("Google sign-in failed:", error);
+
+    if (error?.detail?.status === "username_required") {
+  setUsernameConflict(error.detail);
+  setNewUsername("");
+}
+
+if (error?.detail?.status === "account_link_required") {
+  setAccountLinkRequired(error.detail);
+  setLinkPassword("");
+}
+
+
+
+  }
+}}
+  className="w-full py-3.5 sm:py-4 px-6 rounded-xl sm:rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-base transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer shadow-sm hover:shadow-md"
+>
+  {/* Google logo */}
+  <svg
+    className="w-5 h-5 shrink-0"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path
+      fill="#4285F4"
+      d="M21.35 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h5.22a4.46 4.46 0 0 1-1.94 2.92v2.42h3.14c1.84-1.69 2.93-4.18 2.93-7.37z"
+    />
+    <path
+      fill="#34A853"
+      d="M12 21.6c2.63 0 4.84-.87 6.45-2.36l-3.14-2.42c-.87.58-1.98.93-3.31.93-2.54 0-4.7-1.72-5.47-4.04H3.28v2.5A9.75 9.75 0 0 0 12 21.6z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M6.53 13.71A5.86 5.86 0 0 1 6.22 12c0-.59.1-1.16.31-1.71v-2.5H3.28A9.73 9.73 0 0 0 2.25 12c0 1.57.38 3.05 1.03 4.21l3.25-2.5z"
+    />
+    <path
+      fill="#EA4335"
+      d="M12 6.25c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.27 14.63 2.4 12 2.4a9.75 9.75 0 0 0-8.72 5.39l3.25 2.5C7.3 7.97 9.46 6.25 12 6.25z"
+    />
+  </svg>
+
+  <span>Continue with Google</span>
+</button>
+
+
+{usernameConflict && (
+  <div className="mt-5 p-5 rounded-2xl bg-amber-50 border border-amber-200">
+    <h3 className="text-base font-bold text-slate-900">
+      Choose a new username
+    </h3>
+
+    <p className="mt-1  bg-red-100 text-red-700 border border-red-200 rounded-lg p-3">
+      {usernameConflict.message}
+    </p>
+
+    <div className="mt-4">
+      <label
+        htmlFor="newUsername"
+        className="block text-xs sm:text-sm font-semibold text-slate-700 mb-2"
+      >
+        New Username
+      </label>
+
+      <input
+        id="newUsername"
+        type="text"
+        value={newUsername}
+        onChange={(e) => setNewUsername(e.target.value)}
+        placeholder="Enter a new username"
+        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+      />
+    </div>
+
+    <button
+  type="button"
+  disabled={
+    usernameSubmitting ||
+    !newUsername.trim() ||
+    !googleIdToken
+  }
+  onClick={async () => {
+    try {
+      setUsernameSubmitting(true);
+
+      //console.log("Submitting new username:", newUsername.trim());
+      await googleLogin(
+        googleIdToken,
+        newUsername.trim()
+      );
+
+      setUsernameConflict(null);
+      setNewUsername("");
+      setGoogleIdToken(null);
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error(
+        "Username submission failed:",
+        error
+      );
+    } finally {
+      setUsernameSubmitting(false);
+    }
+  }}
+  className="w-full mt-4 py-3 px-5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  {usernameSubmitting
+    ? "Setting username..."
+    : "Set Username"}
+</button>
+  </div>
+)}
+
+
+
+
+{accountLinkRequired && (
+  <div className="mt-5 p-5 rounded-2xl bg-blue-50 border border-blue-200">
+
+    <h3 className="text-base font-bold text-slate-900">
+      Link your Google account with your previous account
+    </h3>
+
+    <p className="mt-2 bg-blue-100 text-blue-700 border border-blue-200 rounded-lg p-3 text-sm leading-relaxed">
+      {accountLinkRequired.message}
+    </p>
+
+    <div className="mt-4">
+      <label
+        htmlFor="linkPassword"
+        className="block text-xs sm:text-sm font-semibold text-slate-700 mb-2"
+      >
+        Your existing password
+      </label>
+
+      <input
+        id="linkPassword"
+        type="password"
+        value={linkPassword}
+        onChange={(e) => {
+          setLinkPassword(e.target.value);
+          setLinkAlert(null);
+        }}
+        placeholder="Enter your existing account password"
+        disabled={linkSubmitting}
+        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent disabled:opacity-60"
+      />
+    </div>
+
+    {/* Alert */}
+    {linkAlert && (
+      <div
+        className={`mt-4 p-3 rounded-xl border text-sm font-medium ${
+          linkAlert.type === "success"
+            ? "bg-green-50 border-green-200 text-green-700"
+            : "bg-red-50 border-red-200 text-red-700"
+        }`}
+      >
+        {linkAlert.type === "success" ? "✓ " : "✕ "}
+        {linkAlert.message}
+      </div>
+    )}
+
+    <button
+      type="button"
+      disabled={
+        !linkPassword.trim() ||
+        linkSubmitting ||
+        !googleIdToken
+      }
+      onClick={async () => {
+        try {
+          //console.log("LINK BUTTON CLICKED");
+          setLinkSubmitting(true);
+          setLinkAlert(null);
+
+          await linkGoogleAccount(
+            googleIdToken,
+            linkPassword.trim()
+          );
+
+          // Successful linking
+          setLinkAlert({
+            type: "success",
+            message:
+              "Your Google account has been linked successfully! Redirecting..."
+          });
+
+          setLinkPassword("");
+          setGoogleIdToken(null);
+          setAccountLinkRequired(null);
+
+          // Give the user time to see the success message
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 1500);
+
+        } catch (error) {
+
+          console.error("Google account linking failed:", error);
+
+          let message =
+            "Something went wrong while linking your Google account. Please try again.";
+
+          const status =
+            error?.detail?.status;
+
+          if (status === "401") {
+            message =
+              "Incorrect password. Please enter the password for your existing account.";
+          }
+
+          if (error?.detail === "Invalid password.") {
+            message =
+              "Incorrect password. Please try again.";
+          }
+
+          if (error?.detail === "This Google account is already linked to another account.") {
+            message =
+              "This Google account is already linked to another account.";
+          }
+
+          if (status === "account_link_required") {
+            message =
+              error.detail.message;
+          }
+
+          setLinkAlert({
+            type: "error",
+            message,
+          });
+
+          // Automatically hide the error after 4 seconds
+          setTimeout(() => {
+            setLinkAlert(null);
+          }, 4000);
+
+        } finally {
+          setLinkSubmitting(false);
+        }
+      }}
+      className="w-full mt-4 py-3 px-5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {linkSubmitting
+        ? "Linking Google Account..."
+        : "Link Google Account"}
+    </button>
+
+  </div>
+)}
+
             </form>
           </div>
         </div>
@@ -353,4 +642,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
+} 

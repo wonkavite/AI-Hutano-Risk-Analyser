@@ -28,6 +28,45 @@ export function AuthProvider({ children }) {
 
   const [isAuthenticated, setIsAuthenticated] = useState(!!authService.getToken());
 
+  
+
+const googleLogin = async (idToken, username = null) => {
+  try {
+    const response = await authService.googleLogin(
+      idToken,
+      username
+    );
+
+    await refreshUser();
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+const linkGoogleAccount = async (idToken, password) => {
+  try {
+    const response = await authService.linkGoogleAccount(
+      idToken,
+      password
+    );
+
+    await refreshUser();
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
+
+
+
   const [loading, setLoading] = useState(true);
 
   const syncUser = (profile, authenticated = true) => {
@@ -131,7 +170,8 @@ useEffect(() => {
     register,
 
     login,
-
+    googleLogin,
+    linkGoogleAccount,
     logout,
     refreshUser,
   };
