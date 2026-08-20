@@ -1,5 +1,9 @@
 🧠 Student Mental Wellness Risk Assessment System
 
+🌐 Live Demo
+🚀 Visit the Live Application: https://hutano-risk-analyser.onrender.com/
+
+
 A full-stack web application designed to help students assess their mental wellness through a structured screening assessment and machine-learning-based risk prediction.
 
 The system combines a modern **React + Vite frontend**, **FastAPI backend**, **SQL database**, **JWT authentication**, **Google OAuth**, **Redis/Memurai**, and a machine-learning prediction pipeline into a single application.
