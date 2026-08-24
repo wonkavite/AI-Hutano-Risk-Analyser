@@ -1,8 +1,9 @@
-console.log("Firebase API key exists:", !!import.meta.env.VITE_FIREBASE_API_KEY);
+//console.log("Firebase API key exists:", !!import.meta.env.VITE_FIREBASE_API_KEY);
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
   signInWithPopup,
+  signOut,
   getAuth,
 } from "firebase/auth";
 
@@ -27,3 +28,5 @@ export const signInWithGoogle = async () => {
 
   return result;
 };
+
+export const signOutFromGoogle = () => signOut(auth);

@@ -6,6 +6,7 @@ import React, {
 } from "react";
 
 import * as authService from "../services/authService";
+import { signInWithGoogle, signOutFromGoogle } from "../firebase";
 
 const readStoredUser = () => {
   if (typeof window === "undefined") return null;
@@ -31,34 +32,28 @@ export function AuthProvider({ children }) {
   
 
 const googleLogin = async (idToken, username = null) => {
+  const response = await authService.googleLogin(idToken, username);
+  await refreshUser();
+  return response;
+};
+
+const googleAuthenticate = async (username = null) => {
+  const result = await signInWithGoogle();
+  const idToken = await result.user.getIdToken();
+
   try {
-    const response = await authService.googleLogin(
-      idToken,
-      username
-    );
-
-    await refreshUser();
-
-    return response;
+    const response = await googleLogin(idToken, username);
+    return { response, idToken };
   } catch (error) {
+    error.googleIdToken = idToken;
     throw error;
   }
 };
 
-
 const linkGoogleAccount = async (idToken, password) => {
-  try {
-    const response = await authService.linkGoogleAccount(
-      idToken,
-      password
-    );
-
-    await refreshUser();
-
-    return response;
-  } catch (error) {
-    throw error;
-  }
+  const response = await authService.linkGoogleAccount(idToken, password);
+  await refreshUser();
+  return response;
 };
 
 
@@ -97,39 +92,36 @@ const linkGoogleAccount = async (idToken, password) => {
    * Register new user
    */
   const register = async (userData) => {
-    try {
-      await authService.register(userData);
+    await authService.register(userData);
 
-      // Automatically login after successful registration
-      await login({
-        email: userData.email,
-        password: userData.password,
-      });
-
-    } catch (error) {
-      throw error;
-    }
+    // Automatically login after successful registration
+    await login({
+      email: userData.email,
+      password: userData.password,
+    });
   };
 
   /**
    * Login
    */
   const login = async (credentials) => {
-    try {
-      const response = await authService.login(credentials);
-      await refreshUser();
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await authService.login(credentials);
+    await refreshUser();
+    return response;
   };
 
   /**
    * Logout
    */
-  const logout = () => {
-    authService.logout();
-    syncUser(null, false);
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch {
+      // Local cleanup still completes if the server session is unavailable.
+    } finally {
+      await signOutFromGoogle().catch(() => undefined);
+      syncUser(null, false);
+    }
   };
 
   /**
@@ -149,7 +141,7 @@ useEffect(() => {
 
     try {
       await refreshUser();
-    } catch (error) {
+    } catch {
       authService.logout();
       syncUser(null, false);
     }
@@ -171,6 +163,7 @@ useEffect(() => {
 
     login,
     googleLogin,
+    googleAuthenticate,
     linkGoogleAccount,
     logout,
     refreshUser,

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import { signInWithGoogle } from "../../firebase";
 
 
 import {
@@ -25,7 +24,7 @@ const initialLoginFormData = {
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, googleLogin , linkGoogleAccount } = useAuth();
+  const { login, googleAuthenticate, googleLogin, linkGoogleAccount } = useAuth();
   const errorTimeoutRef = useRef(null);
 
   const [formData, setFormData] = useState(initialLoginFormData);
@@ -40,6 +39,7 @@ const [linkAlert, setLinkAlert] = useState(null);
 const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const showError = (message) => {
     setErrorMessage(message);
@@ -95,7 +95,7 @@ const [showPassword, setShowPassword] = useState(false);
       navigate("/dashboard");
     } catch (err) {
       showError(
-        err.detail ||
+        err?.detail ||
         err.message ||
         "Invalid email or password."
       );
@@ -305,20 +305,17 @@ const [showPassword, setShowPassword] = useState(false);
 
 <button
   type="button"
+  disabled={googleLoading}
   onClick={async () => {
+  if (googleLoading) return;
+  setGoogleLoading(true);
   try {
-    const result = await signInWithGoogle();
-
-    const idToken = await result.user.getIdToken();
-
-    console.log("Firebase user:", result.user);
-     
-    setGoogleIdToken(idToken);
-    await googleLogin(idToken);
+    await googleAuthenticate();
 
     navigate("/dashboard");
   } catch (error) {
     console.error("Google sign-in failed:", error);
+    if (error?.googleIdToken) setGoogleIdToken(error.googleIdToken);
 
     if (error?.detail?.status === "username_required") {
   setUsernameConflict(error.detail);
@@ -329,6 +326,17 @@ if (error?.detail?.status === "account_link_required") {
   setAccountLinkRequired(error.detail);
   setLinkPassword("");
 }
+
+    if (error?.detail?.status === "username_taken") {
+      setUsernameConflict(error.detail);
+      setNewUsername("");
+    }
+
+    if (!error?.detail?.status) {
+      showError(error?.detail || error?.message || "Google sign-in failed.");
+    }
+  } finally {
+    setGoogleLoading(false);
 
 
 
@@ -420,6 +428,11 @@ if (error?.detail?.status === "account_link_required") {
         "Username submission failed:",
         error
       );
+      if (error?.detail?.status === "username_taken") {
+        setUsernameConflict(error.detail);
+      } else {
+        showError(error?.detail || error?.message || "Unable to set username.");
+      }
     } finally {
       setUsernameSubmitting(false);
     }
@@ -524,14 +537,6 @@ if (error?.detail?.status === "account_link_required") {
           let message =
             "Something went wrong while linking your Google account. Please try again.";
 
-          const status =
-            error?.detail?.status;
-
-          if (status === "401") {
-            message =
-              "Incorrect password. Please enter the password for your existing account.";
-          }
-
           if (error?.detail === "Invalid password.") {
             message =
               "Incorrect password. Please try again.";
@@ -542,7 +547,7 @@ if (error?.detail?.status === "account_link_required") {
               "This Google account is already linked to another account.";
           }
 
-          if (status === "account_link_required") {
+          if (error?.detail?.status === "account_link_required") {
             message =
               error.detail.message;
           }

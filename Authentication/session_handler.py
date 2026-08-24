@@ -15,7 +15,8 @@ def create_authenticated_session(user):
     # Store session in Redis
     redis_client.set(
         session_id,
-        str(user.id)
+        str(user.id),
+        ex=30 * 60
     )
 
     # Create JWT

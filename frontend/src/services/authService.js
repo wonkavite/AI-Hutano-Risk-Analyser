@@ -90,9 +90,17 @@ export const linkGoogleAccount = async (idToken, password) => {
 /**
  * Logout
  */
-export const logout = () => {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("auth_user");
+export const logout = async () => {
+  try {
+    if (getToken()) {
+      await api.post("/auth/logout");
+    }
+  } catch {
+    // Local cleanup is still required when the server session is unavailable.
+  } finally {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("auth_user");
+  }
 };
 
 /**

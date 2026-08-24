@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 from Database.models import User
 from typing import Optional
@@ -248,12 +249,24 @@ def google_login_user(
     # 6. Create Google user
     # --------------------------------------------------
 
-    user = create_google_user(
-    username=username,
-    email=email,
-    google_id=google_id,
-    db=db
-)
+    try:
+        user = create_google_user(
+            username=username,
+            email=email,
+            google_id=google_id,
+            db=db
+        )
+    except IntegrityError:
+        db.rollback()
+        user = find_user_by_google_id(google_id, db)
+        if user is None:
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "status": "username_taken",
+                    "message": "That username is already taken. Please choose another username."
+                }
+            )
 
     return create_authenticated_session(user)
 
@@ -305,10 +318,17 @@ def link_google_account(
         detail="This Google account is already linked to another account."
     )
 
+    # Google-only accounts cannot be linked through password verification.
+    if not user.password:
+        raise HTTPException(
+            status_code=401,
+            detail="This account does not have a password and cannot be linked this way."
+        )
+
     # Verify existing account password
     if not verify_password(
         password,
-        str(user.password)
+        user.password
     ):
         raise HTTPException(
             status_code=401,

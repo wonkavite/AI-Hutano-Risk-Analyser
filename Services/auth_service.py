@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from Schemas.user_schema import UserUpdateRequest
 from Database.models import User
 from Authentication.password_handler import hash_password, verify_password
@@ -54,7 +55,14 @@ def register_user(request, db: Session):
     # print("REGISTER HASH:", hashed_password)
     # Save to database
     db.add(user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail="Email or username already registered."
+        )
     db.refresh(user)
 
     return user
@@ -96,7 +104,7 @@ def login_user(request, db: Session):
 #     str(user.password)
 # ))
 
-    if not verify_password(
+    if not user.password or not verify_password(
         request.password,
         str(user.password)
     ):

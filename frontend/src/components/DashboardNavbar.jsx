@@ -23,7 +23,7 @@ export default function DashboardNavbar() {
   const navigate = useNavigate();
 
   // Placeholder user object structured for FastAPI backend integration
-   const { user } = useAuth();
+  const { user, logout } = useAuth();
    const displayName = user?.username || "Student";
   
   //const user = {
@@ -66,12 +66,11 @@ export default function DashboardNavbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsProfileMenuOpen(false);
     setIsMobileMenuOpen(false);
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    navigate("/");
+    await logout();
+    navigate("/login");
   };
 
   const getInitials = (name) => {
